@@ -1,8 +1,8 @@
 from fenics import *
 
-def navier_stokes(mesh, boundary_markers, params, gamma, u_bc, up_init, f, f_gamma):
+def stokes(mesh, boundary_markers, params, gamma, u_bc, up_init, f, f_gamma):
     '''
-    Solve the NS equations with slip boundary conditions using Nitsche's method
+    Solve the Stokes equations with slip boundary conditions using Nitsche's method
 
     Args:
         mesh (fenics mesh): domain mesh
@@ -63,21 +63,18 @@ def navier_stokes(mesh, boundary_markers, params, gamma, u_bc, up_init, f, f_gam
     a += - Constant(nu)*dot(D(u)*dot(v,n)*n, n)*ds(1)
     a += - Constant(nu)*dot(D(v)*dot(u,n)*n, n)*ds(1)
     a += + Constant(gamma) * Constant(1.0 / h) * dot(u, n) * dot(v, n) * ds(1)
-    a += inner(grad(u)*u, v)*dx - div(v)*p*dx - q*div(u)*dx
+    a += - div(v)*p*dx - q*div(u)*dx
     a +=  + rho*q*dx + lamda*p*dx
     a +=  + p*dot(v,n)*ds(1) + q*dot(u,n)*ds(1)
 
     L =  dot(f,v)*dx - f_gamma*dot(v, tau)*ds(1) # here f is forcing term in (1) and f_gamma is forcing term in the rhs of (3)
-
-    F = a - L
 
 
     # On the sides of the box, we use an essential boundary condition for velocity
     bc = DirichletBC(W.sub(0), u_bc, boundary_markers, 3)
 
     # Solve
-    solve(F == 0, up, bc, solver_parameters={"newton_solver":{"linear_solver":'mumps'},
-                                             "newton_solver":{"relative_tolerance":1e-7}})
+    solve(a==L, up, bc)
     u, p, lamda = up.split()
 
     return u, p, lamda, up
