@@ -4,7 +4,6 @@ This repo contains code used to generate the figures and results in [*New Insigh
 
 ![image](https://github.com/IngeborgGjerde/stokes-paradox/assets/12695403/b89c0668-60be-4bc1-b92e-4f1daa179b0d)
 
-For the results in Figure 1, we refer to the [repo](https://github.com/IngeborgGjerde/nitsche-method-for-navier-stokes-with-slip) on Nitsche's method for slip boundary conditions.
 
 ## Dependencies
 
@@ -20,8 +19,11 @@ source activate fenicsproject
 
 ## Usage
 
-The simulations for Figure 4 were generated using `triparadok.py` for the no-slip boundary conditions,
-and `navitripdok.py` for the slip boundary conditions. The results are collected and plotted in the octave scripts `tripara.m`, and`navitrip.m`, respectively.
+For the results in Figure 2, we refer to the [repo](https://github.com/IngeborgGjerde/nitsche-method-for-navier-stokes-with-slip) on Nitsche's method for slip boundary conditions. A short example is given in `stokes_with_friction.py`. 
+
+
+The simulations for Figure 4 were generated using `Figure4/stokes_noslip.py` for the no-slip boundary conditions,
+and `Figure4/stokes_freeslip.py` for the slip boundary conditions with zero friction. The results are collected and plotted in the octave scripts`Figure4/plot_results_stokes_freeslip.m` and `Figure4/plot_results_stokes_freeslip.m`, respectively.
 
 Figure 5 was generated using `ploteffpee.m`. It requires an input "tol" which is an input to the code `effprimestopar.m` which computes the data for the individual curves in Figure 5. 
 The other input to `effprimestopar.m` is the value "b" indicated in Figure 5. The input "tol" is used to control the number of data points in the plot.
